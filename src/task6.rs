@@ -22,13 +22,9 @@ impl std::fmt::Display for Buf {
 
 impl Buf {
     fn append(&mut self, c: char) {
-        if self.pos == MSG_SIZE {
-            self.pos = 0;
-        }
-
         self.buf[self.pos as usize] = c;
 
-        self.pos += 1;
+        self.pos = (self.pos + 1) % MSG_SIZE;
         self.len = std::cmp::min(self.len + 1, MSG_SIZE);
     }
 
