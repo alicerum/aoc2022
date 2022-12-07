@@ -103,16 +103,14 @@ pub fn run(input: BufReader<std::fs::File>) -> std::result::Result<String, Box<d
                     } else if dir == ".." {
                         let mut tmp: Option<Rc<RefCell<Dir>>> = None;
                         if let Some(d) = &cur_dir.as_ref().borrow().parent {
-                            tmp = Some(d.upgrade().unwrap());
+                            tmp = d.upgrade();
                         }
-                        if let Some(d) = tmp {
-                            cur_dir = d.clone();
-                            let mut dirs: Vec<&str> = cwd.split('/').collect();
-                            if dirs.len() > 0 {
-                                dirs.remove(dirs.len() - 1);
-                            }
-                            cwd = format!("/{}/", dirs.join("/"));
+                        cur_dir = tmp.unwrap().clone();
+                        let mut dirs: Vec<&str> = cwd.split('/').collect();
+                        if dirs.len() > 0 {
+                            dirs.remove(dirs.len() - 1);
                         }
+                        cwd = format!("/{}/", dirs.join("/"));
                     } else {
                         let mut tmp: Option<Rc<RefCell<Dir>>> = None;
                         {
