@@ -77,7 +77,6 @@ pub fn run(input: BufReader<std::fs::File>) -> std::result::Result<String, Box<d
     let root_dir = Rc::new(RefCell::new(Dir::root()));
     let mut cur_dir = root_dir.clone();
 
-    let mut cwd = String::from("/");
     let mut ls_mode = false;
 
     for line in input.lines() {
@@ -99,32 +98,25 @@ pub fn run(input: BufReader<std::fs::File>) -> std::result::Result<String, Box<d
                 Cmd::Cd(dir) => {
                     if dir == "/" {
                         cur_dir = root_dir.clone();
-                        cwd = "/".to_string();
                     } else if dir == ".." {
                         let mut tmp: Option<Rc<RefCell<Dir>>> = None;
                         if let Some(d) = &cur_dir.as_ref().borrow().parent {
                             tmp = d.upgrade();
                         }
                         cur_dir = tmp.unwrap().clone();
-                        let mut dirs: Vec<&str> = cwd.split('/').collect();
-                        if dirs.len() > 0 {
-                            dirs.remove(dirs.len() - 1);
-                        }
-                        cwd = format!("/{}/", dirs.join("/"));
                     } else {
                         let mut tmp: Option<Rc<RefCell<Dir>>> = None;
                         {
                             let dirs = &cur_dir.as_ref().borrow().dirs;
                             for d in dirs {
                                 if d.as_ref().borrow().name == dir {
-                                    cwd = format!("{}{}/", cwd, dir);
                                     tmp = Some(d.clone());
                                     break;
                                 }
                             }
                         }
                         if let Some(d) = tmp {
-                            cur_dir = d.clone();
+                            cur_dir = d;
                         } else {
                             eprintln!("could not find dir {}", dir);
                         }
