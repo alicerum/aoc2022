@@ -103,7 +103,7 @@ pub fn run(input: BufReader<std::fs::File>) -> std::result::Result<String, Box<d
                         if let Some(d) = &cur_dir.as_ref().borrow().parent {
                             tmp = d.upgrade();
                         }
-                        cur_dir = tmp.unwrap().clone();
+                        cur_dir = tmp.unwrap();
                     } else {
                         let mut tmp: Option<Rc<RefCell<Dir>>> = None;
                         {
