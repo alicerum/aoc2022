@@ -9,6 +9,7 @@ mod task5;
 mod task6;
 mod task7;
 mod task8;
+mod task9;
 
 #[derive(Debug)]
 struct AocError(String);
@@ -31,6 +32,7 @@ fn task_to_run(command: &str, input: BufReader<File>) -> Result<String, Box<dyn 
         "task6" => task6::run(input),
         "task7" => task7::run(input),
         "task8" => task8::run(input),
+        "task9" => task9::run(input),
         _ => Err(Box::new(AocError(format!("wrong command '{}'", command)))),
     }
 }
