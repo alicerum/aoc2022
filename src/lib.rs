@@ -2,6 +2,7 @@ use std::fmt;
 use std::{error::Error, fmt::Display, fs::File, io::BufReader};
 
 mod task1;
+mod task10;
 mod task2;
 mod task3;
 mod task4;
@@ -33,6 +34,7 @@ fn task_to_run(command: &str, input: BufReader<File>) -> Result<String, Box<dyn 
         "task7" => task7::run(input),
         "task8" => task8::run(input),
         "task9" => task9::run(input),
+        "task10" => task10::run(input),
         _ => Err(Box::new(AocError(format!("wrong command '{}'", command)))),
     }
 }
