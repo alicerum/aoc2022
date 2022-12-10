@@ -44,13 +44,9 @@ pub fn run(input: BufReader<File>) -> std::result::Result<String, Box<dyn Error>
         }
 
         if !next_addx {
-            let current_command = Command::from_str(&input.next().unwrap().unwrap()).unwrap();
-            match current_command {
-                Command::Noop => {}
-                Command::Addx(c) => {
-                    next_addx = true;
-                    next_addx_value = c;
-                }
+            if let Command::Addx(c) = Command::from_str(&input.next().unwrap().unwrap()).unwrap() {
+                next_addx = true;
+                next_addx_value = c;
             }
         } else {
             x += next_addx_value;
